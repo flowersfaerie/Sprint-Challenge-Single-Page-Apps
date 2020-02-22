@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import CharacterCard from './CharacterCard';
+import Search from './SearchForm';
 import {Container, Row} from 'reactstrap';
 
 const CharacterList = () => {
@@ -9,7 +10,7 @@ const CharacterList = () => {
 
   const effectCallback = () => {
     axios
-      // .get("https://rickandmortyapi.com/api/character/")
+      .get("https://rickandmortyapi.com/api/character/")
       .then(response => {
         console.log('response', response);
         setCList(response.data.results);
@@ -17,16 +18,18 @@ const CharacterList = () => {
       .catch(error => console.log(error));
   };
 
-  useEffect(effectCallback, [id]);    
+  useEffect(effectCallback, [cList.id, cList.name]);    
     // TODO: Add API Request here - must run in `useEffect`
     //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
     
   return (
+    
     <Container>
+      <Search />
       <Row>
         <section className="character-list">
           {cList.map(character => (
-            <CharacterCard key={CharacterCard.id} character={character} />
+            <CharacterCard key={character.id} character={character} />
           ))}
         </section>
       </Row>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
+// import CharacterList from './CharacterList'
 
-export default function SearchForm() {
+const SearchForm = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState("characters");
+  const [searchResults, setSearchResults] = useState(CharacterList);
 
   useEffect(() => {
-    const results = characters.filter(character => {
+    const results = CharacterList.filter(character => {
       return character.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
@@ -19,7 +20,7 @@ export default function SearchForm() {
 
   return (
     <section className="search-form">
-     // Add a search form here
+     {/* // Add a search form here */}
       <div>
         <form>
           <label htmlFor="name">Search</label>
@@ -32,7 +33,16 @@ export default function SearchForm() {
             onChange={changeHandler}
           />
         </form>
+        <div className="character-list">
+          <ul>
+            {searchResults.map(character => {
+              return <li key={character.id}>{character}</li>;
+            })}
+          </ul>
+        </div>
       </div>
     </section>
   );
 }
+
+export default SearchForm;
