@@ -7,32 +7,42 @@ import {Container, Row} from 'reactstrap';
 const CharacterList = () => {
   // TODO: Add useState to track data from useEffect
   const [cList, setCList] = useState([]);
-
-  const effectCallback = () => {
-    axios
+  const [searchResults, setSearchResults] = useState([]);
+  
+  useEffect(() => {
+    const getCharacters = () => {
+      axios
       .get("https://rickandmortyapi.com/api/character/")
       .then(response => {
         console.log('response', response);
         setCList(response.data.results);
+        setSearchResults(response.data.results);
       })
       .catch(error => console.log(error));
-  };
-
-  useEffect(effectCallback, [cList.id, cList.name]);    
+    }
+    getCharacters();
+  }, []);
+  
+  // useEffect(() => effectCallback(), []);    
     // TODO: Add API Request here - must run in `useEffect`
     //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
     
+    if(!searchResults) {
+      return <h1>LOADING!</h1>
+    }
+
+    console.log('CList', cList);
   return (
     
     <Container>
-      <Search />
+      <Search searchResults={searchResults} setSearchResults={setSearchResults} cList={cList} />
       <Row>
-        <section className="character-list">
-          {cList.map(character => (
-            <CharacterCard key={character.id} character={character} />
-          ))}
-        </section>
-      </Row>
+          <div className="character-list">
+            {searchResults.map(character => {
+              return <CharacterCard key={character.id} character={character} />;
+            })}
+          </div>
+        </Row>
     </Container>
   );
 }

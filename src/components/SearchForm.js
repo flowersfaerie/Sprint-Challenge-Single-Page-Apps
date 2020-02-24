@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-// import CharacterList from './CharacterList'
+import CharacterList from './CharacterList';
+// import CharacterCard from './CharacterCard';
+// import {Row} from 'reactstrap';
 
-const SearchForm = () => {
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState(CharacterList);
-
+const SearchForm = (props) => {
+console.log('Props', props)
+  const [searchTerm, setSearchTerm] = useState();
+  
   useEffect(() => {
-    const results = CharacterList.filter(character => {
-      return character.toLowerCase().includes(searchTerm.toLowerCase());
-    });
+  const results = props.cList.filter(character => 
+    character.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-    setSearchResults(results);
+    props.setSearchResults(results);
+    console.log('Search Results', props.searchResults)
   }, [searchTerm]);
-
+ 
   const changeHandler = event => {
     setSearchTerm(event.target.value);
   };
@@ -23,7 +25,7 @@ const SearchForm = () => {
      {/* // Add a search form here */}
       <div>
         <form>
-          <label htmlFor="name">Search</label>
+          <label htmlFor="name">Search Characters</label>
           <input
             id="name"
             type="text"
@@ -33,13 +35,7 @@ const SearchForm = () => {
             onChange={changeHandler}
           />
         </form>
-        <div className="character-list">
-          <ul>
-            {searchResults.map(character => {
-              return <li key={character.id}>{character}</li>;
-            })}
-          </ul>
-        </div>
+        
       </div>
     </section>
   );
